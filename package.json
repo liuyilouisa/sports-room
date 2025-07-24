@@ -1,0 +1,5 @@
+{
+  "name": "sports-root",
+  "private": true,
+  "packageManager": "pnpm@9.4.0"
+}
