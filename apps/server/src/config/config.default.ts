@@ -1,15 +1,11 @@
 import { MidwayConfig } from '@midwayjs/core';
 import { join } from 'path';
+import { User } from '../entity/user.entity';
 
 export default {
-  // use for cookie sign key, should change to your own and keep security
   keys: '1752904420566_1913',
-  koa: {
-    port: 7001,
-  },
-  jwt: {
-    secret: 'your_jwt_secret',
-  },
+  koa: { port: 7001 },
+  jwt: { secret: 'pYwpP16N7htyZ9FnxyuU', expiresIn: '7d' },
   typeorm: {
     dataSource: {
       default: {
@@ -17,14 +13,19 @@ export default {
         database: join(__dirname, '../../sports.db'),
         synchronize: true,
         logging: true,
-        entities: ['src/entity/**/*.ts'],
+        entities: [
+          User,
+        ],
       },
     },
   },
   swagger: {
     title: 'Sports Room API',
-    description: '体育活动室接口文档',
-    version: '1.0.0',
     path: '/swagger-ui/',
+    auth: {
+      name: 'bearer',
+      authType: 'bearer',
+      description: 'JWT Bearer Token',
+    },
   },
 } as MidwayConfig;

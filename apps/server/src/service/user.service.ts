@@ -1,14 +1,30 @@
 import { Provide } from '@midwayjs/core';
-import { IUserOptions } from '../interface';
+import { InjectEntityModel } from '@midwayjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../entity/user.entity';
+import { RegisterDTO } from '../dto/auth.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Provide()
 export class UserService {
-  async getUser(options: IUserOptions) {
-    return {
-      uid: options.uid,
-      username: 'mockedName',
-      phone: '12345678901',
-      email: 'xxx.xxx@xxx.com',
-    };
+  @InjectEntityModel(User)
+  userRepo: Repository<User>;
+
+  async create(dto: RegisterDTO) {
+    const exists = await this.userRepo.findOne({ where: { email: dto.email } });
+    if (exists) throw new Error('邮箱已存在');
+    const user = this.userRepo.create({
+      ...dto,
+      password: await bcrypt.hash(dto.password, 10),
+    });
+    return this.userRepo.save(user);
+  }
+
+  async validateAndGet(email: string, plain: string) {
+    const user = await this.userRepo.findOne({ where: { email } });
+    if (!user || !(await bcrypt.compare(plain, user.password))) {
+      throw new Error('邮箱或密码错误');
+    }
+    return user;
   }
 }
