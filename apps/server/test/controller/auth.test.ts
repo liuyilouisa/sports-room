@@ -52,8 +52,6 @@ describe('AuthController (e2e)', () => {
       password: '123456',
     });
 
-    console.log('登录返回 token:', loginRes.body.token);
-
     const { token } = loginRes.body;
     expect(token).toBeDefined();
 
