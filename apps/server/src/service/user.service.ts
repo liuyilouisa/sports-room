@@ -20,11 +20,19 @@ export class UserService {
     return this.userRepo.save(user);
   }
 
-  async validateAndGet(email: string, plain: string) {
+  async validateAndGet(email: string, plain: string): Promise<User | null> {
     const user = await this.userRepo.findOne({ where: { email } });
     if (!user || !(await bcrypt.compare(plain, user.password))) {
-      throw new Error('邮箱或密码错误');
+      return null;
     }
     return user;
+  }
+
+  async findById(id: number): Promise<User | null> {
+    return this.userRepo.findOne({ where: { id } });
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepo.findOne({ where: { email } });
   }
 }

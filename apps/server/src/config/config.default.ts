@@ -5,7 +5,7 @@ import { User } from '../entity/user.entity';
 export default {
   keys: '1752904420566_1913',
   koa: { port: 7001 },
-  jwt: { secret: 'pYwpP16N7htyZ9FnxyuU', expiresIn: '7d' },
+  jwt: { secret: 'your_jwt_secret', expiresIn: '7d' },
   typeorm: {
     dataSource: {
       default: {
@@ -13,9 +13,7 @@ export default {
         database: join(__dirname, '../../sports.db'),
         synchronize: true,
         logging: true,
-        entities: [
-          User,
-        ],
+        entities: [User],
       },
     },
   },
