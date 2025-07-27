@@ -1,4 +1,3 @@
-// apps/server/test/controller/auth.test.ts
 import { createHttpRequest } from '@midwayjs/mock';
 import { app } from '../setup';
 
