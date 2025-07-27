@@ -19,5 +19,7 @@ jobs:
                   cache: "pnpm"
             - run: pnpm install --frozen-lockfile
             - name: Test
-              run: pnpm test
+              run: |
+                  cd apps/server
+                  pnpm test
             - run: echo "pipeline placeholder - OK"
