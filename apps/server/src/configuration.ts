@@ -6,9 +6,6 @@ import { join } from 'path';
 import * as typeorm from '@midwayjs/typeorm';
 import * as swagger from '@midwayjs/swagger';
 import * as jwt from '@midwayjs/jwt';
-// import { DefaultErrorFilter } from './filter/default.filter';
-// import { NotFoundFilter } from './filter/notfound.filter';
-// import { ReportMiddleware } from './middleware/report.middleware';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import 'reflect-metadata';
 
@@ -31,10 +28,20 @@ export class MainConfiguration {
   app: koa.Application;
 
   async onReady() {
-    // add middleware
+    // 1. 中间件：JwtMiddleware 已经在 resolve() 里做路径白名单，这里全局注册即可
     this.app.useMiddleware([JwtMiddleware]);
-    // this.app.useMiddleware([ReportMiddleware]);
-    // add filter
-    // this.app.useFilter([NotFoundFilter, DefaultErrorFilter]);
+
+    // 2. 全局错误 -> JSON（不再依赖 DefaultErrorFilter）
+    this.app.use(async (ctx, next) => {
+      try {
+        await next();
+      } catch (err: any) {
+        ctx.status = err.status || 500;
+        ctx.body = {
+          code: err.code || 'INTERNAL_ERROR',
+          message: err.message || '服务器内部错误',
+        };
+      }
+    });
   }
 }
