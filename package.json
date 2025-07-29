@@ -1,5 +1,17 @@
 {
-  "name": "sports-root",
-  "private": true,
-  "packageManager": "pnpm@9.4.0"
+    "name": "sports-root",
+    "private": true,
+    "packageManager": "pnpm@9.4.0",
+    "devDependencies": {
+        "@playwright/test": "^1.54.1",
+        "@types/node": "^20.19.9",
+        "start-server-and-test": "^2.0.12"
+    },
+    "scripts": {
+        "ci:build": "pnpm --filter server build && pnpm --filter front build",
+        "ci:start": "start-server-and-test ci:backend http://localhost:7001/swagger-ui/ ci:frontend",
+        "ci:backend": "pnpm --filter server start:prod",
+        "ci:frontend": "pnpm --filter front preview --host 0.0.0.0 --port 5173",
+        "test:e2e": "pnpm ci:build && playwright test"
+    }
 }

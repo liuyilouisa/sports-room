@@ -25,5 +25,11 @@ export default {
       authType: 'bearer',
       description: 'JWT Bearer Token',
     },
+    cors: {
+      origin: process.env.CORS_ORIGIN?.split(',') ?? '*',
+      credentials: true,
+      allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+      allowHeaders: ['Content-Type', 'Authorization'],
+    },
   },
 } as MidwayConfig;
