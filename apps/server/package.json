@@ -6,6 +6,7 @@
   "dependencies": {
     "@midwayjs/bootstrap": "^3.17.9",
     "@midwayjs/core": "^3.17.9",
+    "@midwayjs/cross-domain": "^3.20.10",
     "@midwayjs/info": "^3.17.9",
     "@midwayjs/jwt": "^3.17.9",
     "@midwayjs/koa": "^3.17.9",
@@ -34,13 +35,14 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node ./bootstrap.js",
+    "start": "cross-env NODE_ENV=production node ./bootstrap.js",
+    "start:prod": "pnpm start",
     "dev": "cross-env NODE_ENV=local mwtsc --watch --run @midwayjs/mock/app.js",
     "test": "cross-env NODE_ENV=unittest jest",
     "cov": "jest --coverage",
     "lint": "mwts check",
     "lint:fix": "mwts fix",
-    "ci": "npm run cov",
+    "ci": "pnpm cov",
     "build": "mwtsc --cleanOutDir"
   },
   "repository": {

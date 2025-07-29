@@ -6,6 +6,7 @@ import { join } from 'path';
 import * as typeorm from '@midwayjs/typeorm';
 import * as swagger from '@midwayjs/swagger';
 import * as jwt from '@midwayjs/jwt';
+import * as crossDomain from '@midwayjs/cross-domain';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import 'reflect-metadata';
 
@@ -20,6 +21,7 @@ import 'reflect-metadata';
     typeorm,
     swagger,
     jwt,
+    crossDomain,
   ],
   importConfigs: [join(__dirname, './config')],
 })

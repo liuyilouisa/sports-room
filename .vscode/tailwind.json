@@ -1,0 +1,8 @@
+{
+    "version": 1.1,
+    "atDirectives": [
+        { "name": "@tailwind", "description": "Tailwind base directive" },
+        { "name": "@apply", "description": "Tailwind apply directive" },
+        { "name": "@layer", "description": "Tailwind layer directive" }
+    ]
+}
