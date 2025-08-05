@@ -1,4 +1,3 @@
-// src/controller/auth.controller.ts
 import { Controller, Post, Body, Get, Inject, HttpCode } from '@midwayjs/core';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
