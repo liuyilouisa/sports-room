@@ -1,1 +1,8 @@
 node_modules
+# SQLite
+*.db
+*.db-journal
+# TypeORM
+apps/server/logs/
+apps/server/**/*.log
+
