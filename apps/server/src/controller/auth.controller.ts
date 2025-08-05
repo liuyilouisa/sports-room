@@ -1,4 +1,3 @@
-// src/controller/auth.controller.ts
 import { Controller, Post, Body, Get, Inject, HttpCode } from '@midwayjs/core';
 import { Context } from '@midwayjs/koa';
 import { UserService } from '../service/user.service';
@@ -43,7 +42,7 @@ export class AuthController {
     if (!user) {
       throw new BizError('INVALID_CREDENTIALS', 401, '邮箱或密码错误');
     }
-    const token = await this.jwt.sign({ uid: user.id });
+    const token = await this.jwt.sign({ uid: user.id, role: user.role });
     return {
       token,
       user: { id: user.id, name: user.name, email: user.email },
