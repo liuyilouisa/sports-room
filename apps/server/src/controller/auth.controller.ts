@@ -59,6 +59,6 @@ export class AuthController {
     if (!user) {
       throw new BizError('USER_NOT_FOUND', 404, '用户不存在');
     }
-    return { id: user.id, name: user.name, email: user.email };
+    return { id: user.id, name: user.name, email: user.email, role: user.role };
   }
 }
