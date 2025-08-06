@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-    email: z.string().email("邮箱格式不正确"),
+    email: z.email("邮箱格式不正确"),
     password: z.string().min(6, "至少 6 位"),
 });
 
