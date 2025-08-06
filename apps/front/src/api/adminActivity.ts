@@ -15,7 +15,7 @@ export interface AdminActivity {
 }
 
 export interface Page<T> {
-    rows: T[];
+    data: T[];
     total: number;
 }
 

@@ -8,6 +8,7 @@
         "start-server-and-test": "^2.0.12"
     },
     "scripts": {
+        "dev": "pnpm -r --parallel dev",
         "ci:build": "pnpm --filter server build && pnpm --filter front build",
         "ci:start": "start-server-and-test ci:backend http://localhost:7001/swagger-ui/ ci:frontend",
         "ci:backend": "pnpm --filter server start:prod",

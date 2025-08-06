@@ -68,11 +68,11 @@ export class AdminActivityController {
     const page = Math.max(1, Number(pageStr) || 1);
     const size = Math.max(1, Number(sizeStr) || 20);
 
-    const [rows, total] = await this.activityRepo.findAndCount({
+    const [data, total] = await this.activityRepo.findAndCount({
       skip: (page - 1) * size,
       take: size,
       order: { createdAt: 'DESC' },
     });
-    return { rows, total };
+    return { data, total };
   }
 }

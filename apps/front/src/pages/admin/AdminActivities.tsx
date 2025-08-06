@@ -36,7 +36,7 @@ export default function AdminActivities() {
             </div>
             {isLoading ? (
                 <p>加载中...</p>
-            ) : data?.rows?.length ? (
+            ) : data?.data?.length ? (
                 <table className="min-w-full border">
                     <thead>
                         <tr>
@@ -48,7 +48,7 @@ export default function AdminActivities() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.rows.map((act) => (
+                        {data.data.map((act) => (
                             <tr key={act.id}>
                                 <td className="border px-2 py-1">{act.id}</td>
                                 <td className="border px-2 py-1">

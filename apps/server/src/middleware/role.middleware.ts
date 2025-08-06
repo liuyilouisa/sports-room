@@ -1,22 +1,20 @@
 import { Middleware, IMiddleware } from '@midwayjs/core';
 import { NextFunction, Context } from '@midwayjs/koa';
+import { BizError } from '../error/http.error';
 
 @Middleware()
 export class RoleMiddleware implements IMiddleware<Context, NextFunction> {
   resolve() {
     return async (ctx: Context, next: NextFunction) => {
-      // ctx.state.user 由 JwtMiddleware 注入
+      // 依赖 JwtMiddleware 已注入 ctx.state.user
       if (!ctx.state.user) {
-        ctx.status = 401;
-        ctx.body = { message: 'Unauthorized: no user info' };
-        return;
+        throw new BizError('UNAUTHORIZED', 401, '用户未登录');
       }
 
       if (ctx.state.user.role !== 'admin') {
-        ctx.status = 403;
-        ctx.body = { message: 'Forbidden: admin only' };
-        return;
+        throw new BizError('FORBIDDEN', 403, '需要管理员权限');
       }
+
       await next();
     };
   }

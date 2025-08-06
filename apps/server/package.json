@@ -15,6 +15,7 @@
     "@midwayjs/typeorm": "^3.17.9",
     "@midwayjs/validate": "^3.17.9",
     "bcryptjs": "^3.0.2",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "reflect-metadata": "^0.2.2",
     "sqlite3": "^5.1.7",

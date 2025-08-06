@@ -15,7 +15,7 @@ interface Props {
 
 export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
     const { data: list } = useListActivities();
-    const activity = list?.rows?.find((a) => a.id === activityId);
+    const activity = list?.data?.find((a) => a.id === activityId);
 
     const schema = activityId ? updateActivitySchema : createActivitySchema;
 

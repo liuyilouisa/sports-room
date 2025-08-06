@@ -1,4 +1,3 @@
-// apps/server/test/setup.ts
 import { createApp, close } from '@midwayjs/mock';
 import { join } from 'path';
 
