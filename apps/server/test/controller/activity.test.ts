@@ -7,10 +7,9 @@ import * as bcrypt from 'bcryptjs';
 
 describe('GET /api/activities', () => {
   /* ------------------- 工具函数 ------------------- */
-  // 登录并缓存 token
   let adminToken: string;
 
-  // 用管理员身份创建活动
+  // 管理员创建活动（必须带 startAt）
   const createActivity = (payload: Partial<Activity>) =>
     createHttpRequest(app)
       .post('/api/admin/activities')
@@ -19,14 +18,11 @@ describe('GET /api/activities', () => {
 
   /* ------------------- 全局前置 ------------------- */
   beforeAll(async () => {
-    // 1. 拿到数据源
     const container = app.getApplicationContext();
     const dsMgr = await container.getAsync(TypeORMDataSourceManager);
     const ds = dsMgr.getDataSource('default');
-
     await ds.synchronize(true);
 
-    // 2. 事务：插入管理员（若不存在）
     await ds.transaction(async em => {
       const userRepo = em.getRepository(User);
       if ((await userRepo.count()) === 0) {
@@ -39,7 +35,6 @@ describe('GET /api/activities', () => {
       }
     });
 
-    // 3. 登录拿 token
     const res = await createHttpRequest(app)
       .post('/api/auth/login')
       .send({ email: 'admin@test.com', password: '123456' });
@@ -57,10 +52,20 @@ describe('GET /api/activities', () => {
   });
 
   it('should return paginated list', async () => {
-    // 造 2 条数据
     await Promise.all([
-      createActivity({ title: '篮球', description: 'ball', capacity: 10 }),
-      createActivity({ title: '羽毛球', description: 'bat', capacity: 8 }),
+      createActivity({
+        title: '篮球',
+        description: 'ball',
+        capacity: 10,
+        startAt: new Date('2024-08-10T15:00:00Z'), // ← Date
+        endAt: new Date('2024-08-10T17:00:00Z'), // ← Date
+      }),
+      createActivity({
+        title: '羽毛球',
+        description: 'bat',
+        capacity: 8,
+        startAt: new Date('2024-08-11T09:00:00Z'), // ← Date
+      }),
     ]);
 
     const res = await createHttpRequest(app)
