@@ -29,11 +29,23 @@ export class Activity {
   @Column({ type: 'varchar', default: 'published' })
   status: 'draft' | 'published';
 
+  @ApiProperty({ example: '2024-08-10T15:00:00.000Z' })
+  @Column({ type: 'text' })
+  startAt: Date;
+
+  @ApiProperty({ example: '2024-08-10T17:00:00.000Z' })
+  @Column({ type: 'text', nullable: true })
+  endAt: Date | null;
+
+  @ApiProperty({ example: 0 })
+  @Column({ type: 'int', default: 0 })
+  enrolledCount: number;
+
   @ApiProperty()
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'text' })
   createdAt: Date;
 
   @ApiProperty()
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'text' })
   updatedAt: Date;
 }

@@ -36,23 +36,34 @@ export default function AdminActivities() {
             </div>
             {isLoading ? (
                 <p>加载中...</p>
-            ) : data?.rows?.length ? (
+            ) : data?.data?.length ? (
                 <table className="min-w-full border">
                     <thead>
                         <tr>
                             <th className="border px-2 py-1">ID</th>
                             <th className="border px-2 py-1">标题</th>
+                            <th className="border px-2 py-1">开始时间</th>
+                            <th className="border px-2 py-1">结束时间</th>
                             <th className="border px-2 py-1">人数上限</th>
                             <th className="border px-2 py-1">状态</th>
                             <th className="border px-2 py-1">操作</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        {data.rows.map((act) => (
+                        {data.data.map((act) => (
                             <tr key={act.id}>
                                 <td className="border px-2 py-1">{act.id}</td>
                                 <td className="border px-2 py-1">
                                     {act.title}
+                                </td>
+                                <td className="border px-2 py-1">
+                                    {new Date(act.startAt).toLocaleString()}
+                                </td>
+                                <td className="border px-2 py-1">
+                                    {act.endAt
+                                        ? new Date(act.endAt).toLocaleString()
+                                        : "-"}
                                 </td>
                                 <td className="border px-2 py-1">
                                     {act.capacity}
@@ -62,6 +73,7 @@ export default function AdminActivities() {
                                 </td>
                                 <td className="border px-2 py-1 flex gap-2">
                                     <button
+                                        aria-label={`编辑 ${act.title}`}
                                         onClick={() =>
                                             setDrawer({
                                                 mode: "edit",
@@ -73,6 +85,7 @@ export default function AdminActivities() {
                                         编辑
                                     </button>
                                     <button
+                                        aria-label={`删除 ${act.title}`}
                                         onClick={() =>
                                             remove
                                                 .mutateAsync(act.id)

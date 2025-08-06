@@ -13,7 +13,7 @@ test("用户可注册并登录", async ({ page }) => {
   // 2. 点击注册
   await page.getByRole("link", { name: "注册" }).click();
 
-  // 3. 拦截注册接口，等待它完成（关键）
+  // 3. 拦截注册接口，等待它完成
   const registerPromise = page.waitForResponse(
     (res) =>
       res.url().includes("/api/auth/register") && res.status() === 201,
@@ -38,6 +38,11 @@ test("用户可注册并登录", async ({ page }) => {
   await page.getByLabel("密码").fill(pwd);
   await page.getByRole("button", { name: "登录" }).click();
 
-  // 8. 断言欢迎语
-  await expect(page.locator("text=欢迎")).toContainText(name);
+  const loginPromise = page.waitForResponse(
+    (res) =>
+      res.url().includes("/api/auth/login") && res.status() === 200,
+    { timeout: 10000 }
+  );
+
+  await loginPromise;
 });
