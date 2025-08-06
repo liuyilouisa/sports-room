@@ -42,7 +42,7 @@ export class AuthController {
     if (!user) {
       throw new BizError('INVALID_CREDENTIALS', 401, '邮箱或密码错误');
     }
-    const token = await this.jwt.sign({ uid: user.id });
+    const token = await this.jwt.sign({ uid: user.id, role: user.role });
     return {
       token,
       user: { id: user.id, name: user.name, email: user.email },
@@ -59,6 +59,6 @@ export class AuthController {
     if (!user) {
       throw new BizError('USER_NOT_FOUND', 404, '用户不存在');
     }
-    return { id: user.id, name: user.name, email: user.email };
+    return { id: user.id, name: user.name, email: user.email, role: user.role };
   }
 }

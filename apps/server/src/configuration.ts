@@ -30,10 +30,10 @@ export class MainConfiguration {
   app: koa.Application;
 
   async onReady() {
-    // 1. 中间件：JwtMiddleware 已经在 resolve() 里做路径白名单，这里全局注册即可
+    // 1. 中间件
     this.app.useMiddleware([JwtMiddleware]);
 
-    // 2. 全局错误 -> JSON（不再依赖 DefaultErrorFilter）
+    // 2. 全局错误 -> JSON
     this.app.use(async (ctx, next) => {
       try {
         await next();

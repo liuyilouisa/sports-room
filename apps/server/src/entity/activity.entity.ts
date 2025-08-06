@@ -5,30 +5,35 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ApiProperty } from '@midwayjs/swagger';
 
-@Entity('activities')
+@Entity('activity')
 export class Activity {
+  @ApiProperty({ example: 1 })
   @PrimaryGeneratedColumn()
-  id!: number;
+  id: number;
 
-  @Column({ length: 120 })
-  title!: string;
+  @ApiProperty({ example: '篮球友谊赛' })
+  @Column({ length: 100 })
+  title: string;
 
-  @Column({ type: 'text', nullable: true })
-  description?: string;
+  @ApiProperty({ example: '本周六下午 3 点...' })
+  @Column({ type: 'text' })
+  description: string;
 
-  @Column({ type: 'integer', unsigned: true })
-  capacity!: number;
+  @ApiProperty({ example: 30 })
+  @Column({ type: 'int' })
+  capacity: number;
 
-  @Column({ type: 'integer', unsigned: true, default: 0 })
-  enrolled!: number;
+  @ApiProperty({ enum: ['draft', 'published'], example: 'published' })
+  @Column({ type: 'varchar', default: 'published' })
+  status: 'draft' | 'published';
 
-  @Column({ type: 'varchar', length: 10, default: 'active' })
-  status!: 'active' | 'closed';
-
+  @ApiProperty()
   @CreateDateColumn()
-  createdAt!: Date;
+  createdAt: Date;
 
+  @ApiProperty()
   @UpdateDateColumn()
-  updatedAt!: Date;
+  updatedAt: Date;
 }
