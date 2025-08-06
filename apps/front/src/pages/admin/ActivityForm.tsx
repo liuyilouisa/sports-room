@@ -55,6 +55,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                     <label className="block mb-2">
                         标题
                         <input
+                            aria-label="标题"
                             {...register("title")}
                             className="block w-full border rounded px-2 py-1"
                         />
@@ -68,6 +69,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                     <label className="block mb-2">
                         描述
                         <textarea
+                            aria-label="描述"
                             {...register("description")}
                             className="block w-full border rounded px-2 py-1"
                         />
@@ -81,6 +83,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                     <label className="block mb-4">
                         人数上限
                         <input
+                            aria-label="人数上限"
                             type="number"
                             {...register("capacity", { valueAsNumber: true })}
                             className="block w-full border rounded px-2 py-1"
@@ -94,6 +97,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
 
                     <div className="flex gap-2 justify-end">
                         <button
+                            aria-label="取消"
                             type="button"
                             className="px-4 py-2 border rounded"
                             onClick={onClose}
@@ -101,6 +105,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                             取消
                         </button>
                         <button
+                            aria-label="保存"
                             type="submit"
                             disabled={isSubmitting}
                             className="px-4 py-2 bg-blue-600 text-white rounded"
