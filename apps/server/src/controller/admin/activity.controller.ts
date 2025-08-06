@@ -71,7 +71,7 @@ export class AdminActivityController {
     const [data, total] = await this.activityRepo.findAndCount({
       skip: (page - 1) * size,
       take: size,
-      order: { createdAt: 'DESC' },
+      order: { startAt: 'DESC' },
     });
     return { data, total };
   }

@@ -5,6 +5,7 @@ import {
   MaxLength,
   IsEnum,
   IsOptional,
+  IsDateString,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@midwayjs/swagger';
 import { Type } from 'class-transformer';
@@ -24,6 +25,15 @@ export class CreateActivityDTO {
   @IsInt()
   @Min(1)
   capacity: number;
+
+  @ApiProperty({ example: '2024-08-10T15:00:00.000Z' })
+  @IsDateString()
+  startAt: string;
+
+  @ApiPropertyOptional({ example: '2024-08-10T17:00:00.000Z' })
+  @IsOptional()
+  @IsDateString()
+  endAt?: string | null;
 }
 
 export class UpdateActivityDTO {
@@ -49,6 +59,16 @@ export class UpdateActivityDTO {
   @IsOptional()
   @IsEnum(['draft', 'published'])
   status?: 'draft' | 'published';
+
+  @ApiPropertyOptional({ example: '2024-08-10T15:00:00.000Z' })
+  @IsOptional()
+  @IsDateString()
+  startAt?: string;
+
+  @ApiPropertyOptional({ example: '2024-08-10T17:00:00.000Z' })
+  @IsOptional()
+  @IsDateString()
+  endAt?: string | null;
 }
 
 export class SearchActivityDTO {

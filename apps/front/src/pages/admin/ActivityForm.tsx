@@ -6,6 +6,7 @@ import {
 } from "../../schemas/adminActivity";
 import { useEffect } from "react";
 import { useListActivities } from "../../hooks/useAdminActivity";
+import type { AdminActivity } from "../../api/adminActivity";
 
 interface Props {
     activityId?: number;
@@ -14,6 +15,14 @@ interface Props {
 }
 
 export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
+    const toFormValues = (activity: AdminActivity) => ({
+        title: activity.title,
+        description: activity.description,
+        capacity: activity.capacity,
+        startAt: activity.startAt?.slice(0, 16) ?? "",
+        endAt: activity.endAt ? activity.endAt.slice(0, 16) : "",
+    });
+
     const { data: list } = useListActivities();
     const activity = list?.data?.find((a) => a.id === activityId);
 
@@ -27,16 +36,20 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
     } = useForm({
         resolver: zodResolver(schema),
         defaultValues: activity
-            ? {
-                  title: activity.title,
-                  description: activity.description,
-                  capacity: activity.capacity,
-              }
-            : { title: "", description: "", capacity: 10 },
+            ? toFormValues(activity)
+            : {
+                  title: "",
+                  description: "",
+                  capacity: 10,
+                  startAt: "",
+                  endAt: "",
+              },
     });
 
     useEffect(() => {
-        if (activity) reset(activity);
+        if (activity) {
+            reset(toFormValues(activity));
+        }
     }, [activity, reset]);
 
     return (
@@ -51,7 +64,9 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                 <h3 className="text-lg font-semibold mb-4">
                     {activityId ? "编辑活动" : "新建活动"}
                 </h3>
+
                 <form onSubmit={handleSubmit(onSubmit)}>
+                    {/* 标题 */}
                     <label className="block mb-2">
                         标题
                         <input
@@ -66,6 +81,39 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                         )}
                     </label>
 
+                    {/* 开始时间 */}
+                    <label className="block mb-2">
+                        开始时间
+                        <input
+                            aria-label="开始时间"
+                            type="datetime-local"
+                            {...register("startAt")}
+                            className="block w-full border rounded px-2 py-1"
+                        />
+                        {errors.startAt && (
+                            <p className="text-red-500 text-sm">
+                                {errors.startAt.message}
+                            </p>
+                        )}
+                    </label>
+
+                    {/* 结束时间 */}
+                    <label className="block mb-2">
+                        结束时间（选填）
+                        <input
+                            aria-label="结束时间"
+                            type="datetime-local"
+                            {...register("endAt")}
+                            className="block w-full border rounded px-2 py-1"
+                        />
+                        {errors.endAt && (
+                            <p className="text-red-500 text-sm">
+                                {errors.endAt.message}
+                            </p>
+                        )}
+                    </label>
+
+                    {/* 描述 */}
                     <label className="block mb-2">
                         描述
                         <textarea
@@ -80,6 +128,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                         )}
                     </label>
 
+                    {/* 人数上限 */}
                     <label className="block mb-4">
                         人数上限
                         <input
@@ -95,6 +144,7 @@ export default function ActivityForm({ activityId, onClose, onSubmit }: Props) {
                         )}
                     </label>
 
+                    {/* 按钮 */}
                     <div className="flex gap-2 justify-end">
                         <button
                             aria-label="取消"

@@ -10,6 +10,9 @@ export interface AdminActivity {
     description: string;
     capacity: number;
     status: "draft" | "published";
+    startAt: string;
+    endAt: string | null;
+    enrolledCount: number;
     createdAt: string;
     updatedAt: string;
 }

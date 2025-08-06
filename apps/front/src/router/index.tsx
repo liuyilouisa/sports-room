@@ -9,6 +9,8 @@ const Register = lazy(() => import("../pages/Register"));
 const Home = lazy(() => import("../pages/Home"));
 const AdminActivities = lazy(() => import("../pages/admin/AdminActivities"));
 const AdminLayout = lazy(() => import("../pages/admin/AdminLayout"));
+const ActivityDetail = lazy(() => import("../pages/ActivityDetail"));
+const Activities = lazy(() => import("../pages/Activities"));
 
 /* ====== 通用守卫 ====== */
 function RequireAuth() {
@@ -38,6 +40,8 @@ export const router = createBrowserRouter([
         element: <RequireAuth />,
         children: [
             { index: true, element: <Home /> },
+            { path: "activities", element: <Activities /> },
+            { path: "activities/:id", element: <ActivityDetail /> },
         ],
     },
 
