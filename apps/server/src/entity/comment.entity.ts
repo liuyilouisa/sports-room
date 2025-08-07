@@ -36,21 +36,23 @@ export class Comment {
   parentId: number | null;
 
   /* ---------- ORM 关系 ---------- */
-  @ManyToOne(() => User, (user) => user.comments, { onDelete: 'CASCADE' })
+  @ManyToOne(() => User, user => user.comments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToOne(() => Activity, (activity) => activity.comments, {
+  @ManyToOne(() => Activity, activity => activity.comments, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'activityId' })
   activity: Activity;
 
   /* 一条评论可以有 N 条子评论（楼中楼） */
-  @OneToMany(() => Comment, (comment) => comment.parent)
+  @OneToMany(() => Comment, comment => comment.parent)
   children: Comment[];
 
-  @ManyToOne(() => Comment, (comment) => comment.children)
+  @ManyToOne(() => Comment, comment => comment.children, {
+    onDelete: 'CASCADE',
+  })
   parent: Comment;
 
   /* ---------- 时间戳 ---------- */

@@ -3,7 +3,11 @@ import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from '../entity/comment.entity';
 import { User } from '../entity/user.entity';
-import { CreateCommentDTO, CommentListDTO } from '../dto/comment.dto';
+import {
+  CreateCommentDTO,
+  CommentListDTO,
+  CommentVO,
+} from '../dto/comment.dto';
 
 @Provide()
 export class CommentService {
@@ -27,6 +31,7 @@ export class CommentService {
   /* 分页拉取某活动的评论（含楼中楼）*/
   async paginateByActivity(activityId: number, dto: CommentListDTO) {
     const { page, size } = dto;
+
     const [data, total] = await this.commentRepo
       .createQueryBuilder('c')
       .leftJoinAndSelect('c.user', 'u')
@@ -40,7 +45,24 @@ export class CommentService {
       .take(size)
       .getManyAndCount();
 
-    return { data, total, page, size };
+    const voList: CommentVO[] = data.map(c => ({
+      id: c.id,
+      content: c.content,
+      parentId: c.parentId,
+      userId: c.user.id,
+      userName: c.user.name,
+      createdAt: c.createdAt,
+      children: c.children?.map(child => ({
+        id: child.id,
+        content: child.content,
+        parentId: child.parentId,
+        userId: child.user.id,
+        userName: child.user.name,
+        createdAt: child.createdAt,
+      })),
+    }));
+
+    return { data: voList, total, page, size };
   }
 
   /* 删除自己的评论（管理员可删任何）*/
