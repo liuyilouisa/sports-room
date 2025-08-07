@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Inject,
+  HttpCode,
 } from '@midwayjs/core';
 import {
   ApiTags,
@@ -33,6 +34,7 @@ export class CommentController {
 
   /* 发表评论 / 楼中楼回复 */
   @Post()
+  @HttpCode(201)
   @ApiParam({ name: 'activityId', type: 'number', example: 1 })
   @ApiResponse({ status: 201, description: '发表成功' })
   @ApiResponse({ status: 400, description: 'activityId 非法' })
