@@ -26,9 +26,10 @@ const CommentItem: FC<Props> = ({
     depth = 0,
 }) => {
     const [showReplyForm, setShowReplyForm] = useState(false);
-    // 1️⃣ 新增：子评论折叠状态
     const [showChildren, setShowChildren] = useState(true);
-
+    const [expand, setExpand] = useState(false);
+    const MAX_LEN = 150;
+    const needFold = comment.content.length > MAX_LEN;
     const isOwner = currentUserId === comment.userId;
 
     return (
@@ -51,7 +52,19 @@ const CommentItem: FC<Props> = ({
                     </span>
                 </div>
 
-                <p className="mt-1 text-sm text-gray-800">{comment.content}</p>
+                <p className="mt-1 text-sm text-gray-800">
+                    {needFold && !expand
+                        ? `${comment.content.slice(0, MAX_LEN)}…`
+                        : comment.content}
+                    {needFold && (
+                        <button
+                            onClick={() => setExpand(!expand)}
+                            className="ml-1 text-blue-600 hover:underline text-xs"
+                        >
+                            {expand ? "收起" : "展开"}
+                        </button>
+                    )}
+                </p>
 
                 <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
                     {depth < 1 && (
@@ -90,7 +103,7 @@ const CommentItem: FC<Props> = ({
                     </div>
                 )}
 
-                {/* 2️⃣ 子评论渲染 + 折叠按钮 */}
+                {/* 子评论渲染 + 折叠按钮 */}
                 {comment.children && comment.children.length > 0 && (
                     <div
                         className={`mt-4 space-y-4 border-l-2 pl-4
