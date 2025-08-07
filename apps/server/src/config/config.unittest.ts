@@ -1,6 +1,7 @@
 import { MidwayConfig } from '@midwayjs/core';
 import { User } from '../entity/user.entity';
 import { Activity } from '../entity/activity.entity';
+import { Comment } from '../entity/comment.entity';
 
 export default {
   koa: {
@@ -13,7 +14,7 @@ export default {
         database: ':memory:',
         synchronize: true,
         logging: false,
-        entities: [User, Activity],
+        entities: [User, Activity, Comment],
       },
     },
   },

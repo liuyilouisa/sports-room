@@ -8,7 +8,7 @@ export class JwtMiddleware {
   @Inject() jwt: JwtService;
 
   // 需要鉴权的路由前缀
-  private readonly authPrefix = ['/api/auth/me', '/api/admin'];
+  private readonly authPrefix = ['/api/auth/me', '/api/admin', '/api/activities'];
 
   resolve() {
     return async (ctx: Context, next: NextFunction) => {

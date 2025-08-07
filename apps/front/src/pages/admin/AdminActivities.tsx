@@ -23,9 +23,9 @@ export default function AdminActivities() {
     >(null);
 
     return (
-        <div className="p-4">
+        <div className="max-w-7xl mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">活动列表</h2>
+                <h2 className="text-3xl font-bold mb-4">活动列表</h2>
                 <button
                     aria-label="新建"
                     onClick={() => setDrawer({ mode: "create" })}
