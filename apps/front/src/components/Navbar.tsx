@@ -1,15 +1,9 @@
-// components/Navbar.tsx
 import { NavLink, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "../api/auth";
+import { useUserStore } from "../stores/user";
 
 export default function Navbar() {
     const location = useLocation();
-    const { data: user } = useQuery({
-        queryKey: ["me"],
-        queryFn: authApi.me,
-        retry: false,
-    });
+    const user = useUserStore((s) => s.user);
 
     // 登录/注册页不显示
     if (location.pathname === "/login" || location.pathname === "/register") {
@@ -19,10 +13,7 @@ export default function Navbar() {
     // 判断是否在 admin 区域
     const inAdmin = location.pathname.startsWith("/admin");
 
-    const doLogout = () => {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-    };
+    const logout = useUserStore((s) => s.logout);
 
     // 统一高亮类名
     const navClass = ({ isActive }: { isActive: boolean }) =>
@@ -79,7 +70,7 @@ export default function Navbar() {
 
                     {/* 退出按钮 */}
                     <button
-                        onClick={doLogout}
+                        onClick={logout}
                         className="text-red-600 hover:underline"
                     >
                         退出

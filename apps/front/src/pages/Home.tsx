@@ -1,17 +1,13 @@
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { authApi } from "../api/auth";
-import { useAuthGuard } from "../hooks/useAuthGuard";
+import { useUserStore } from "../stores/user";
 
 export default function Home() {
-    useAuthGuard();
+    const logout = useUserStore((s) => s.logout);
     const nav = useNavigate();
 
-    const { data: user, isLoading } = useQuery({
-        queryKey: ["me"],
-        queryFn: () => authApi.me(),
-        retry: false,
-    });
+    const user = useUserStore((s) => s.user);
+
+    const isLoading = user === undefined;
 
     // 没登录就跳转
     if (!isLoading && !user) {
@@ -26,8 +22,7 @@ export default function Home() {
             <h1 className="text-3xl">欢迎，{user?.name}</h1>
             <button
                 onClick={() => {
-                    localStorage.removeItem("token");
-                    nav("/login");
+                    logout();
                 }}
                 className="btn btn-error mt-4"
             >

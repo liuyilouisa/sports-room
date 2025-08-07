@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { useUserStore } from "../stores/user";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { authApi } from "../api/auth";
@@ -8,6 +9,7 @@ import { registerSchema, type RegisterDto } from "../schemas/auth";
 
 export default function Register() {
     const nav = useNavigate();
+    const setUser = useUserStore((s) => s.setUser);
     const {
         register,
         handleSubmit,
@@ -21,6 +23,7 @@ export default function Register() {
         onSuccess: ({ data }) => {
             toast.success("注册成功");
             localStorage.setItem("token", data.token);
+            setUser(data.user);
             nav("/");
         },
     });

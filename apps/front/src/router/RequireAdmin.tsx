@@ -1,18 +1,11 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { authApi } from "../api/auth";
+import { useUserStore } from "../stores/user";
 import Navbar from "../components/Navbar";
 
 export function RequireAdmin() {
-    const {
-        isLoading,
-        data: user,
-        error,
-    } = useQuery({
-        queryKey: ["me"],
-        queryFn: authApi.me,
-        retry: false,
-    });
+    const user = useUserStore((s) => s.user);
+    const isLoading = user === undefined;
+    const error = user === null;
 
     if (isLoading) return <div className="p-4">加载中…</div>;
     if (error || !user) return <Navigate to="/login" replace />;

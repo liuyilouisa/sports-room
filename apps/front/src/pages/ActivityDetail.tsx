@@ -2,10 +2,8 @@ import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getActivityById } from "../api/activities";
 import Spinner from "../components/Spinner";
-import { useAuthGuard } from "../hooks/useAuthGuard";
 
 export default function ActivityDetail() {
-    useAuthGuard();
     const { id } = useParams<{ id: string }>();
     const numericId = Number(id);
 
