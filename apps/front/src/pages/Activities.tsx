@@ -66,7 +66,7 @@ export default function Activities() {
                 }}
             />
 
-            {!data?.data.length && <Empty />}
+            {!data?.data.length && <Empty text="暂无活动" />}
 
             {data?.data.length ? (
                 <>
