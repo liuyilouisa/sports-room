@@ -2,7 +2,7 @@ import { z } from "zod";
 
 /* ====== 请求 ====== */
 export const CreateCommentSchema = z.object({
-    content: z.string().min(1).max(500),
+    content: z.string().min(1, { message: "内容不能为空" }).max(500, { message: "内容不能超过500字符" }),
     activityId: z.number().int().positive(),
     parentId: z.number().int().positive().optional(),
 });

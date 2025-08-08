@@ -14,6 +14,6 @@
         "ci:start": "start-server-and-test ci:backend http://localhost:7001/swagger-ui/ ci:frontend",
         "ci:backend": "pnpm --filter server start:e2e",
         "ci:frontend": "pnpm --filter front preview --host 0.0.0.0 --port 5173",
-        "test:e2e": "pnpm ci:build && playwright test"
+        "test:e2e": "pnpm ci:build && playwright test --workers=1"
     }
 }

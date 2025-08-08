@@ -1,9 +1,10 @@
 import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from 'zod';
+import { z } from "zod";
 import { CreateCommentSchema, CreateCommentDTO } from "../schemas/comment";
 import Spinner from "./Spinner";
+import is from "zod/v4/locales/is.cjs";
 
 interface Props {
     activityId: number;
@@ -24,6 +25,7 @@ const CommentForm: FC<Props> = ({
         register,
         handleSubmit,
         reset,
+        watch,
         formState: { errors, isSubmitting },
     } = useForm<Omit<CreateCommentDTO, "activityId">>({
         resolver: zodResolver(
@@ -36,6 +38,9 @@ const CommentForm: FC<Props> = ({
         ),
         defaultValues: { parentId },
     });
+
+    const content = watch("content");
+    const isOverLimit = content?.length > 500;
 
     const submit = async (values: Omit<CreateCommentDTO, "activityId">) => {
         await onSubmit(values);
@@ -65,7 +70,7 @@ const CommentForm: FC<Props> = ({
                 )}
                 <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || isOverLimit || !content?.trim()}
                     className="flex items-center gap-1 rounded bg-blue-600 px-3 py-1.5 text-sm text-white hover:bg-blue-700 disabled:opacity-60"
                 >
                     {isSubmitting && <Spinner size="xs" />}

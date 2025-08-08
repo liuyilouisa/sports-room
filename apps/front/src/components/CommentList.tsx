@@ -49,6 +49,7 @@ const CommentList: FC<Props> = ({
                     </button>
                 </div>
             )}
+            <div data-testid="comment-list-end" style={{ height: 1 }} />
         </div>
     );
 };

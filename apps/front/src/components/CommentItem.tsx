@@ -33,7 +33,7 @@ const CommentItem: FC<Props> = ({
     const isOwner = currentUserId === comment.userId;
 
     return (
-        <div className="flex space-x-3">
+        <div className="flex space-x-3" data-testid="comment-item">
             {/* 头像大小随层级变化 */}
             <div
                 className={`flex-shrink-0 rounded-full bg-gray-200 flex-center text-sm font-bold text-gray-500
