@@ -1,8 +1,7 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { Comment } from '../entity/comment.entity';
-import { User } from '../entity/user.entity';
+import { User, Comment } from '../entity';
 import {
   CreateCommentDTO,
   CommentListDTO,

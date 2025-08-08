@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@midwayjs/swagger';
-import { Comment } from './comment.entity';
+import type { Comment } from './comment.entity';
 
 @Entity('activity')
 export class Activity {
@@ -51,8 +51,6 @@ export class Activity {
   @UpdateDateColumn({ type: 'text' })
   updatedAt: Date;
 
-  /* ---------- ORM 关系 ---------- */
-  @ApiProperty({ type: () => Comment, isArray: true })
-  @OneToMany(() => Comment, comment => comment.activity)
+  @OneToMany('Comment', 'activity')
   comments: Comment[];
 }

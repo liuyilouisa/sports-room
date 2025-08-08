@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { ApiProperty } from '@midwayjs/swagger';
-import { Comment } from './comment.entity';
+import type { Comment } from './comment.entity';
 
 @Entity()
 export class User {
@@ -24,7 +24,6 @@ export class User {
   @Column({ default: 'user' })
   role: string;
 
-  @ApiProperty()
-  @OneToMany(() => Comment, comment => comment.user)
+  @OneToMany('Comment', 'user')
   comments: Comment[];
 }

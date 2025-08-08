@@ -3,7 +3,7 @@ import { User, Activity, Comment } from '../entity';
 
 export default {
   koa: {
-    port: null,
+    port: 7001,
   },
   typeorm: {
     dataSource: {
@@ -11,7 +11,7 @@ export default {
         type: 'sqlite',
         database: ':memory:',
         synchronize: true,
-        logging: false,
+        logging: true,
         entities: [User, Activity, Comment],
       },
     },

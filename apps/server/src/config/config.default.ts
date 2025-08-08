@@ -1,8 +1,6 @@
 import { MidwayConfig } from '@midwayjs/core';
 import { join } from 'path';
-import { User } from '../entity/user.entity';
-import { Activity } from '../entity/activity.entity';
-import { Comment } from '../entity/comment.entity';
+import { User, Activity, Comment } from '../entity';
 
 export default {
   keys: '1752904420566_1913',

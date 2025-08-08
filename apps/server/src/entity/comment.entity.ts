@@ -9,8 +9,9 @@ import {
   OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@midwayjs/swagger';
-import { User } from './user.entity';
-import { Activity } from './activity.entity';
+import type { User } from './user.entity';
+import type { Activity } from './activity.entity';
+import type { Comment as IComment } from './comment.entity'; // 自引用类型
 
 @Entity('comment')
 export class Comment {
@@ -35,25 +36,21 @@ export class Comment {
   @Column({ type: 'int', nullable: true })
   parentId: number | null;
 
-  /* ---------- ORM 关系 ---------- */
-  @ManyToOne(() => User, user => user.comments, { onDelete: 'CASCADE' })
+  /* ---------- ORM 关系，全部用字符串实体名 ---------- */
+  @ManyToOne('User', 'comments', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   user: User;
 
-  @ManyToOne(() => Activity, activity => activity.comments, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne('Activity', 'comments', { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'activityId' })
   activity: Activity;
 
   /* 一条评论可以有 N 条子评论（楼中楼） */
-  @OneToMany(() => Comment, comment => comment.parent)
-  children: Comment[];
+  @OneToMany('Comment', 'parent')
+  children: IComment[];
 
-  @ManyToOne(() => Comment, comment => comment.children, {
-    onDelete: 'CASCADE',
-  })
-  parent: Comment;
+  @ManyToOne('Comment', 'children', { onDelete: 'CASCADE' })
+  parent: IComment;
 
   /* ---------- 时间戳 ---------- */
   @ApiProperty()
