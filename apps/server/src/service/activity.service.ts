@@ -1,7 +1,7 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { Activity } from '../entity/activity.entity';
+import { Activity } from '../entity';
 
 export interface PageResult<T> {
   data: T[];

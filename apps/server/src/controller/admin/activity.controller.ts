@@ -11,7 +11,7 @@ import {
 } from '@midwayjs/core';
 import { Repository } from 'typeorm';
 import { InjectEntityModel } from '@midwayjs/typeorm';
-import { Activity } from '../../entity/activity.entity';
+import { Activity } from '../../entity';
 import { RoleMiddleware } from '../../middleware/role.middleware';
 import { CreateActivityDTO, UpdateActivityDTO } from '../../dto/activity.dto';
 import { BizError } from '../../error/http.error';

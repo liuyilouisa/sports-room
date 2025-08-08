@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { ApiProperty } from '@midwayjs/swagger';
+import type { Comment } from './comment.entity';
 
 @Entity('activity')
 export class Activity {
@@ -48,4 +50,7 @@ export class Activity {
   @ApiProperty()
   @UpdateDateColumn({ type: 'text' })
   updatedAt: Date;
+
+  @OneToMany('Comment', 'activity')
+  comments: Comment[];
 }

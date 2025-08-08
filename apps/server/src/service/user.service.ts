@@ -1,7 +1,7 @@
 import { Provide } from '@midwayjs/core';
 import { InjectEntityModel } from '@midwayjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../entity/user.entity';
+import { User } from '../entity';
 import { RegisterDTO } from '../dto/auth.dto';
 import * as bcrypt from 'bcryptjs';
 
