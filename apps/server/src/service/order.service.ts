@@ -5,7 +5,7 @@ import { User, Activity, Order } from '../entity';
 import { CreateOrderDTO } from '../dto/order.dto';
 import { BizError } from '../error/http.error';
 import * as dayjs from 'dayjs';
-import { nanoid } from 'nanoid';
+import { randomBytes } from 'crypto';
 
 @Provide()
 export class OrderService {
@@ -23,14 +23,15 @@ export class OrderService {
         throw new BizError('ACTIVITY_NOT_FOUND', 404, '活动不存在');
       if (activity.status !== 'published')
         throw new BizError('ACTIVITY_NOT_PUBLISHED', 409, '活动未发布');
+      if (dayjs().isAfter(dayjs(activity.endAt)))
+        throw new BizError('ACTIVITY_ALREADY_ENDED', 409, '活动已结束');
       if (dayjs().isAfter(dayjs(activity.startAt).subtract(3, 'hour')))
         throw new BizError(
           'ACTIVITY_REGISTRATION_CLOSED',
           409,
           '活动已开始前 3 小时，禁止报名'
         );
-      if (dayjs().isAfter(dayjs(activity.endAt)))
-        throw new BizError('ACTIVITY_ALREADY_ENDED', 409, '活动已结束');
+
       if (activity.enrolledCount >= activity.capacity)
         throw new BizError('ACTIVITY_ENROLLED_COUNT_EXCEEDED', 409, '名额已满');
 
@@ -62,7 +63,7 @@ export class OrderService {
         );
 
       /* 4. 生成订单 */
-      const secret = nanoid(8);
+      const secret = randomBytes(4).toString('hex');
       const order = em.create(Order, {
         userId,
         activityId: dto.activityId,
@@ -122,13 +123,17 @@ export class OrderService {
           enrolledCount: () => 'enrolledCount - 1',
           lockVer: () => 'lockVer + 1',
         })
-        .where('id = :id', { id: order.activityId })
+        .where('id = :id AND lockVer = :lockVer', {
+          id: order.activityId,
+          lockVer: order.activity.lockVer,
+        })
         .execute();
+
       if (refundRes.affected === 0) {
-        // 极端并发场景下理论上可能发生，记录日志即可
-        console.warn(
-          'refund decrement enrolledCount failed, id=',
-          order.activityId
+        throw new BizError(
+          'REFUND_CONFLICT',
+          409,
+          '退款失败，名额回退冲突，请重试'
         );
       }
 

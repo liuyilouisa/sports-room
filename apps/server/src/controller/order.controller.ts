@@ -14,10 +14,10 @@ import {
   ApiParam,
 } from '@midwayjs/swagger';
 import { JwtMiddleware } from '../middleware/jwt.middleware';
-import { OrderService } from '../service/order.service';
 import { CreateOrderDTO } from '../dto/order.dto';
 import { BizError } from '../error/http.error';
 import { Context } from '@midwayjs/koa';
+import { OrderService } from '../service/order.service';
 
 @ApiTags('用户端 - 订单')
 @ApiBearerAuth()
@@ -46,7 +46,6 @@ export class OrderController {
   @ApiResponse({ status: 200, description: '退款成功' })
   @ApiResponse({ status: 404, description: '订单不存在' })
   @ApiResponse({ status: 409, description: '不满足退款条件' })
-
   async refund(@Param('id') id: number) {
     const { uid } = this.ctx.state.user;
     if (!uid) throw new BizError('UNAUTHORIZED', 401, '用户未登录');
@@ -57,7 +56,6 @@ export class OrderController {
   @Get('/my')
   @ApiResponse({ status: 200, description: '订单列表' })
   async myOrders() {
-    console.log("this.ctx.state.user", await this.ctx.state.user);
     const { uid } = this.ctx.state.user;
     if (!uid) throw new BizError('UNAUTHORIZED', 401, '用户未登录');
     return this.orderService.myOrders(uid);
