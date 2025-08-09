@@ -44,6 +44,11 @@ export class Activity {
   @Column({ type: 'int', default: 0 })
   enrolledCount: number;
 
+  /** 乐观锁版本号，SQLite 替代悲观锁用 */
+  @ApiProperty({ example: 0 })
+  @Column({ type: 'int', default: 0 })
+  lockVer: number;
+
   @ApiProperty()
   @CreateDateColumn({ type: 'text' })
   createdAt: Date;

@@ -15,10 +15,9 @@ export class OrderService {
 
   async create(userId: number, dto: CreateOrderDTO) {
     return this.orderRepo.manager.transaction(async em => {
-      // 1. 锁活动行
+      /* 1. 检查活动 */
       const activity = await em.findOne(Activity, {
         where: { id: dto.activityId },
-        lock: { mode: 'pessimistic_write' },
       });
       if (!activity)
         throw new BizError('ACTIVITY_NOT_FOUND', 404, '活动不存在');
@@ -35,14 +34,34 @@ export class OrderService {
       if (activity.enrolledCount >= activity.capacity)
         throw new BizError('ACTIVITY_ENROLLED_COUNT_EXCEEDED', 409, '名额已满');
 
-      // 2. 查用户积分
+      /* 2. 检查用户积分 */
       const user = await em.findOne(User, { where: { id: userId } });
       if (!user) throw new BizError('USER_NOT_FOUND', 404, '用户不存在');
-      const cost = 100; // 这里可以放到 activity.costPoints 字段
+      const cost = 100; // 如需动态，可从 activity.costPoints 取
       if (user.points < cost)
         throw new BizError('USER_INSUFFICIENT_POINTS', 409, '积分不足');
 
-      // 3. 生成订单
+      /* 3. 乐观锁扣名额 */
+      const updateRes = await em
+        .createQueryBuilder()
+        .update(Activity)
+        .set({
+          enrolledCount: () => 'enrolledCount + 1',
+          lockVer: () => 'lockVer + 1',
+        })
+        .where('id = :id AND lockVer = :lockVer', {
+          id: dto.activityId,
+          lockVer: activity.lockVer,
+        })
+        .execute();
+      if (updateRes.affected === 0)
+        throw new BizError(
+          'CONCURRENT_CONFLICT',
+          409,
+          '名额已被抢光，请稍后再试'
+        );
+
+      /* 4. 生成订单 */
       const secret = nanoid(8);
       const order = em.create(Order, {
         userId,
@@ -52,11 +71,8 @@ export class OrderService {
       });
       await em.save(order);
 
-      // 4. 扣积分
+      /* 5. 扣积分 */
       await em.decrement(User, { id: userId }, 'points', cost);
-
-      // 5. 增加报名人数
-      await em.increment(Activity, { id: dto.activityId }, 'enrolledCount', 1);
 
       return order;
     });
@@ -86,29 +102,40 @@ export class OrderService {
           '活动已结束，不可退款'
         );
 
-      // 计算退还积分
+      /* 计算退还积分 */
       const hours = now.diff(order.createdAt, 'hour');
       const refundRatio = Math.max(0.1, 1 - hours / 24); // 24h 线性递减，最低退 10%
       const refundPoints = Math.floor(order.costPoints * refundRatio);
 
-      // 更新订单
+      /* 更新订单状态 */
       order.status = 'refunded';
       await em.save(order);
 
-      // 返还积分
+      /* 返还积分 */
       await em.increment(User, { id: userId }, 'points', refundPoints);
 
-      // 报名人数 -1
-      await em.decrement(
-        Activity,
-        { id: order.activityId },
-        'enrolledCount',
-        1
-      );
+      /* 乐观锁还名额 */
+      const refundRes = await em
+        .createQueryBuilder()
+        .update(Activity)
+        .set({
+          enrolledCount: () => 'enrolledCount - 1',
+          lockVer: () => 'lockVer + 1',
+        })
+        .where('id = :id', { id: order.activityId })
+        .execute();
+      if (refundRes.affected === 0) {
+        // 极端并发场景下理论上可能发生，记录日志即可
+        console.warn(
+          'refund decrement enrolledCount failed, id=',
+          order.activityId
+        );
+      }
 
       return { refundPoints };
     });
   }
+
   async myOrders(userId: number) {
     return this.orderRepo.find({
       where: { userId },
