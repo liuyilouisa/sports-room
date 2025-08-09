@@ -22,7 +22,7 @@ export default function Home() {
         );
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4 py-8">
             <div className="w-full max-w-lg">
                 <div className="bg-white rounded-2xl shadow-xl p-8 space-y-6">
                     {/* 头像（占位图） */}

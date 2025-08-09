@@ -16,10 +16,10 @@ export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, u => u.orders)
+  @ManyToOne(() => User, u => u.orders, {onDelete: 'CASCADE'})
   user: User;
 
-  @ManyToOne(() => Activity, a => a.orders)
+  @ManyToOne(() => Activity, a => a.orders, {onDelete: 'CASCADE'})
   activity: Activity;
 
   @Column({ type: 'int' })

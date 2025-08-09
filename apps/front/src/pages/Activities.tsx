@@ -1,3 +1,4 @@
+// Activities.tsx
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -53,31 +54,41 @@ export default function Activities() {
         );
 
     return (
-        <div className="max-w-7xl mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-4">活动列表</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+            {/* 标题 + 搜索栏 */}
+            <header className="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-8">
+                <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
+                    活动列表
+                </h1>
 
-            <SearchBar
-                keyword={keyword}
-                sort={sort}
-                onChange={(next) => {
-                    const nextParams = new URLSearchParams(next);
-                    nextParams.set("page", "1");
-                    setSearch(nextParams, { replace: true });
-                }}
-            />
+                <div className="mt-4 sm:mt-0">
+                    <SearchBar
+                        keyword={keyword}
+                        sort={sort}
+                        onChange={(next) => {
+                            const nextParams = new URLSearchParams(next);
+                            nextParams.set("page", "1");
+                            setSearch(nextParams, { replace: true });
+                        }}
+                    />
+                </div>
+            </header>
 
+            {/* 空数据 */}
             {!data?.data.length && <Empty text="暂无活动" />}
 
+            {/* 活动卡片 */}
             {data?.data.length ? (
                 <>
-                    <div className="grid gap-6 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <div className="grid gap-6 sm:gap-7 mt-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         {data.data.map((act) => (
                             <ActivityCard key={act.id} activity={act} />
                         ))}
                     </div>
 
+                    {/* 分页 */}
                     {totalPages > 1 && (
-                        <nav className="flex justify-center mt-10 space-x-2">
+                        <nav className="flex justify-center mt-12 space-x-1">
                             {Array.from(
                                 { length: totalPages },
                                 (_, i) => i + 1
@@ -85,9 +96,12 @@ export default function Activities() {
                                 <button
                                     key={p}
                                     onClick={() => handlePageChange(p)}
-                                    className={`btn btn-sm ${
-                                        p === page ? "btn-primary" : "btn-ghost"
-                                    }`}
+                                    className={`btn btn-sm rounded-md transition-all duration-200
+                    ${
+                        p === page
+                            ? "btn-primary shadow-md"
+                            : "btn-ghost hover:bg-gray-200"
+                    }`}
                                 >
                                     {p}
                                 </button>

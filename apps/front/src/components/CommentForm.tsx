@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CreateCommentSchema, CreateCommentDTO } from "../schemas/comment";
 import Spinner from "./Spinner";
-import is from "zod/v4/locales/is.cjs";
 
 interface Props {
     activityId: number;

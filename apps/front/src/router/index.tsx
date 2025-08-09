@@ -10,7 +10,6 @@ const Login = lazy(() => import("../pages/Login"));
 const Register = lazy(() => import("../pages/Register"));
 const Home = lazy(() => import("../pages/Home"));
 const AdminActivities = lazy(() => import("../pages/admin/AdminActivities"));
-const AdminLayout = lazy(() => import("../pages/admin/AdminLayout"));
 const ActivityDetail = lazy(() => import("../pages/ActivityDetail"));
 const Activities = lazy(() => import("../pages/Activities"));
 const MyOrders = lazy(() => import("../pages/MyOrders"));
