@@ -13,6 +13,7 @@ const AdminActivities = lazy(() => import("../pages/admin/AdminActivities"));
 const AdminLayout = lazy(() => import("../pages/admin/AdminLayout"));
 const ActivityDetail = lazy(() => import("../pages/ActivityDetail"));
 const Activities = lazy(() => import("../pages/Activities"));
+const MyOrders = lazy(() => import("../pages/MyOrders"));
 
 /* ====== 通用守卫 ====== */
 function RequireAuth() {
@@ -51,6 +52,7 @@ export const router = createBrowserRouter([
             { path: "activities", element: <Activities /> },
             { path: "activities/:id", element: <ActivityDetail /> },
             { path: "home", element: <Home /> },
+            { path: 'my/orders', element: <MyOrders /> }
         ],
     },
 

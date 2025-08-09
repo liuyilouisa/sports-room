@@ -8,6 +8,7 @@ import {
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 
+import { createOrder } from "../api/order";
 import { getActivityById } from "../api/activities";
 import { createComment, getComments, deleteComment } from "../api/comment";
 import type { CommentVO } from "../schemas/comment";
@@ -112,6 +113,11 @@ export default function ActivityDetail() {
             }),
     });
 
+    const enroll = useMutation({
+        mutationFn: createOrder,
+        onSuccess: (d) => alert(`报名成功！口令：${d.secret}`),
+    });
+
     /* ---------- 渲染 ---------- */
     if (activityLoading) return <Spinner />;
     if (activityError)
@@ -142,6 +148,11 @@ export default function ActivityDetail() {
                     ? new Date(activity.endAt).toLocaleString()
                     : "暂无"}
             </div>
+            {activity.enrolledCount < activity.capacity && (
+                <button onClick={() => enroll.mutate(activity.id)}>
+                    用100积分报名
+                </button>
+            )}
             <div className="mb-6">
                 <span className="font-semibold">已报名/名额：</span>
                 {activity.enrolledCount} / {activity.capacity}

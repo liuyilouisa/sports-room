@@ -54,6 +54,9 @@ export default function Navbar() {
                             <NavLink to="/home" className={navClass}>
                                 个人中心
                             </NavLink>
+                            <NavLink to="/my/orders" className={navClass}>
+                                我的订单
+                            </NavLink>
                             <NavLink to="/activities" className={navClass}>
                                 活动列表
                             </NavLink>

@@ -58,9 +58,10 @@ export class AuthController {
 
     // 中间件已保证 uid 必存在
     const user = await this.userService.findById(uid);
+    console.log("当前用户信息", user);
     if (!user) {
       throw new BizError('USER_NOT_FOUND', 404, '用户不存在');
     }
-    return { id: user.id, name: user.name, email: user.email, role: user.role };
+    return { id: user.id, name: user.name, email: user.email, role: user.role, points: user.points };
   }
 }

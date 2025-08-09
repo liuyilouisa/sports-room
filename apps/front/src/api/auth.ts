@@ -16,6 +16,7 @@ export interface User {
     email: string;
     name: string;
     role: "user" | "admin";
+    points: number;
 }
 
 export const authApi = {
