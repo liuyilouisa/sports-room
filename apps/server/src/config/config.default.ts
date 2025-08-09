@@ -1,6 +1,6 @@
 import { MidwayConfig } from '@midwayjs/core';
 import { join } from 'path';
-import { User, Activity, Comment } from '../entity';
+import { User, Activity, Comment, Order } from '../entity';
 
 export default {
   keys: '1752904420566_1913',
@@ -13,7 +13,7 @@ export default {
         database: join(__dirname, '../../sports.db'),
         synchronize: true,
         logging: true,
-        entities: [User, Activity, Comment],
+        entities: [User, Activity, Comment, Order],
       },
     },
   },

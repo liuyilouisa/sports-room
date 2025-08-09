@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@midwayjs/swagger';
 import type { Comment } from './comment.entity';
+import { Order } from './order.entity';
 
 @Entity('activity')
 export class Activity {
@@ -53,4 +54,7 @@ export class Activity {
 
   @OneToMany('Comment', 'activity')
   comments: Comment[];
+
+  @OneToMany(() => Order, o => o.activity)
+  orders: Order[];
 }

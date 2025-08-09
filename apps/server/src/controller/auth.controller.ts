@@ -54,6 +54,8 @@ export class AuthController {
   @ApiResponse({ status: 200, description: '当前用户信息' })
   async me() {
     const { uid } = this.ctx.state.user;
+    console.log("this.ctx.state.user in auth", this.ctx.state.user);
+
     // 中间件已保证 uid 必存在
     const user = await this.userService.findById(uid);
     if (!user) {
