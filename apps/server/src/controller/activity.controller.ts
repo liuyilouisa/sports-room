@@ -1,10 +1,11 @@
 import { Controller, Get, Inject, Param, Query } from '@midwayjs/core';
-import { ApiTags, ApiResponse } from '@midwayjs/swagger';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@midwayjs/swagger';
 import { BizError } from '../error/http.error';
 import { ActivityService } from '../service/activity.service';
 import { SearchActivityDTO } from '../dto/activity.dto';
 
 @ApiTags('用户端 - 活动')
+@ApiBearerAuth()
 @Controller('/api/activities')
 export class UserActivityController {
   @Inject()

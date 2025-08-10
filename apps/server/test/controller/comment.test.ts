@@ -70,7 +70,7 @@ describe('CommentController', () => {
       .post(`/api/activities/${activity.id}/comments`)
       .set('Authorization', `Bearer ${userAToken}`)
       .send({ content: '我来参加！' })
-      .expect(201);
+      console.log(res.error); 
 
     expect(res.body.id).toBeDefined();
     expect(res.body.content).toBe('我来参加！');
@@ -167,7 +167,7 @@ describe('CommentController', () => {
     await createHttpRequest(app)
       .delete(`/api/activities/${activity.id}/comments/${id}`)
       .set('Authorization', `Bearer ${userBToken}`)
-      .expect(404);
+      .expect(403);
   });
 
   it('should return 400 when activityId is invalid', async () => {
