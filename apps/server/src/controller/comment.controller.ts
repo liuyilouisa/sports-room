@@ -17,6 +17,8 @@ import {
 } from '@midwayjs/swagger';
 import { JwtMiddleware } from '../middleware/jwt.middleware';
 import { CommentService } from '../service/comment.service';
+import { ActivityService } from '../service/activity.service';
+import { UserService } from '../service/user.service';
 import { CreateCommentDTO, CommentListDTO } from '../dto/comment.dto';
 import { BizError } from '../error/http.error';
 import { Context } from '@midwayjs/koa';
@@ -31,6 +33,10 @@ export class CommentController {
   commentService: CommentService;
   @Inject()
   ctx: Context;
+  @Inject()
+  activityService: ActivityService;
+  @Inject()
+  userService: UserService;
 
   /* 发表评论 / 楼中楼回复 */
   @Post()
@@ -43,13 +49,12 @@ export class CommentController {
     @Param('activityId') activityIdStr: string,
     @Body() dto: CreateCommentDTO
   ) {
-    const activityId = Number(activityIdStr);
-    if (!activityId)
-      throw new BizError('INVALID_PARAM', 400, 'activityId 非法');
+    const activityId = await this.assertActivityExists(activityIdStr);
     dto.activityId = activityId;
 
     const { uid: userId } = await this.ctx.state.user;
-    if (!userId) {
+    const user = await this.userService.findById(userId);
+    if (!user) {
       throw new BizError('UNAUTHORIZED', 401, '用户未登录或无权限');
     }
     return this.commentService.create(userId, dto);
@@ -64,9 +69,7 @@ export class CommentController {
     @Param('activityId') activityIdStr: string,
     @Query() query: CommentListDTO
   ) {
-    const activityId = Number(activityIdStr);
-    if (!activityId)
-      throw new BizError('INVALID_PARAM', 400, 'activityId 非法');
+    const activityId = await this.assertActivityExists(activityIdStr);
     return this.commentService.paginateByActivity(activityId, query);
   }
 
@@ -74,13 +77,33 @@ export class CommentController {
   @Del('/:id')
   @ApiParam({ name: 'id', type: 'number', example: 1 })
   @ApiResponse({ status: 200, description: '删除成功' })
-  @ApiResponse({ status: 404, description: '评论不存在或无权限' })
-  async remove(@Param('id') id: number) {
+  @ApiResponse({ status: 403, description: '无权删除他人评论' })
+  @ApiResponse({ status: 404, description: '评论不存在' })
+  async remove(
+    @Param('activityId') activityIdStr: string,
+    @Param('id') id: number
+  ) {
+    await this.assertActivityExists(activityIdStr);
     const { uid: userId, role } = await this.ctx.state.user;
-    const affected = await this.commentService.remove(id, userId, role);
-    if (!affected) {
-      throw new BizError('COMMENT_NOT_FOUND', 404, '评论不存在或无权限');
+    const result = await this.commentService.remove(id, userId, role);
+    if (result === null) {
+      throw new BizError('COMMENT_NOT_FOUND', 404, '评论不存在');
+    }
+    if (result === false) {
+      throw new BizError('FORBIDDEN', 403, '无权删除他人评论');
     }
     return { success: true };
+  }
+
+  private async assertActivityExists(activityIdStr: string): Promise<number> {
+    const activityId = Number(activityIdStr);
+    if (!activityId) {
+      throw new BizError('INVALID_PARAM', 400, 'activityId 非法');
+    }
+    const activity = await this.activityService.findPublishedById(activityId);
+    if (!activity) {
+      throw new BizError('ACTIVITY_NOT_FOUND', 404, '活动不存在或未发布');
+    }
+    return activityId; // 返回合法的数字 id，供后续使用
   }
 }

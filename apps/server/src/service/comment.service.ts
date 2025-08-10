@@ -66,13 +66,16 @@ export class CommentService {
 
   /* 删除自己的评论（管理员可删任何）*/
   async remove(id: number, userId: number, role: string) {
-    const qb = this.commentRepo.createQueryBuilder().where('id = :id', { id });
-
-    if (role !== 'admin') {
-      qb.andWhere('userId = :userId', { userId });
+    const comment = await this.commentRepo.findOneBy({ id });
+    if (!comment) {
+      return null; // 返回 null 表示评论不存在
     }
 
-    const { affected } = await qb.delete().execute();
-    return affected;
+    if (role !== 'admin' && comment.userId !== userId) {
+      return false; // 返回 false 表示无权限
+    }
+
+    const { affected } = await this.commentRepo.delete({ id });
+    return affected > 0;
   }
 }
