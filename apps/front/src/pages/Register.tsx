@@ -26,6 +26,16 @@ export default function Register() {
             setUser(data.user);
             nav("/");
         },
+        onError: (err) => {
+            if (err?.message.includes("400")) {
+                toast.error("邮箱已被注册");
+                return;
+            } else if (err?.message.includes("Network Error")) {
+                toast.error("网络错误，请稍后重试");
+            } else {
+                toast.error(err?.message || "注册失败，请重试");
+            }
+        },
     });
 
     return (
@@ -88,11 +98,6 @@ export default function Register() {
                 <button disabled={isPending} className="btn btn-primary w-full">
                     {isPending ? "注册中…" : "注册"}
                 </button>
-                {error && (
-                    <p className="text-red-600 text-sm">
-                        {error?.message || "未知错误"}
-                    </p>
-                )}
             </form>
             <p className="text-center mt-4">
                 已有账号？
