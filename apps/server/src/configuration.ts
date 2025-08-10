@@ -14,6 +14,7 @@ import * as bcrypt from 'bcryptjs';
 import * as UniTestConfig from './config/config.unittest';
 import * as DefaultConfig from './config/config.default';
 import * as E2EConfig from './config/config.e2e';
+import * as staticFile from '@midwayjs/static-file';
 
 @Configuration({
   imports: [
@@ -27,6 +28,7 @@ import * as E2EConfig from './config/config.e2e';
     swagger,
     jwt,
     crossDomain,
+    staticFile,
   ],
   importConfigs: [
     { default: DefaultConfig, unittest: UniTestConfig, e2e: E2EConfig },

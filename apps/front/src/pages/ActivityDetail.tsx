@@ -17,7 +17,7 @@ import Spinner from "../components/Spinner";
 import CommentForm from "../components/CommentForm";
 import CommentList from "../components/CommentList";
 import { useUserStore } from "../stores/user";
-import { toast } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ActivityDetail() {
     const { id } = useParams<{ id: string }>();
@@ -160,139 +160,147 @@ export default function ActivityDetail() {
     const total = commentsPages?.pages[0]?.total ?? 0;
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 to-sky-50">
-            <div className="max-w-4xl mx-auto px-4 py-10">
-                {/* 返回按钮 */}
-                <Link
-                    to="/activities"
-                    className="inline-flex items-center gap-1.5 mb-6 text-sm font-medium text-sky-600 hover:text-sky-700 transition"
-                >
-                    <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
+        <>
+            <Toaster position="top-center" />
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 to-sky-50">
+                <div className="max-w-4xl mx-auto px-4 py-10">
+                    {/* 返回按钮 */}
+                    <Link
+                        to="/activities"
+                        className="inline-flex items-center gap-1.5 mb-6 text-sm font-medium text-sky-600 hover:text-sky-700 transition"
                     >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M15 19l-7-7 7-7"
-                        />
-                    </svg>
-                    返回列表
-                </Link>
-
-                {/* 主要内容卡片 */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-                    <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
-                        {activity.title}
-                    </h1>
-                    <p className="text-slate-600 mb-6 leading-relaxed">
-                        {activity.description}
-                    </p>
-
-                    <div className="space-y-4 divide-y divide-slate-100">
-                        <div className="flex items-center gap-3">
-                            <span className="w-24 font-semibold text-slate-700">
-                                开始时间
-                            </span>
-                            <span className="text-slate-500">
-                                {new Date(activity.startAt).toLocaleString(
-                                    "zh-CN"
-                                )}
-                            </span>
-                        </div>
-                        <div className="flex items-center gap-3 pt-4">
-                            <span className="w-24 font-semibold text-slate-700">
-                                结束时间
-                            </span>
-                            <span className="text-slate-500">
-                                {activity.endAt
-                                    ? new Date(activity.endAt).toLocaleString(
-                                          "zh-CN"
-                                      )
-                                    : "暂无"}
-                            </span>
-                        </div>
-                        <div className="flex items-center gap-3 pt-4">
-                            <span className="w-24 font-semibold text-slate-700">
-                                名额状态
-                            </span>
-                            <span className="text-slate-500">
-                                {activity.enrolledCount} / {activity.capacity}
-                            </span>
-                        </div>
-                    </div>
-                    <div className="mt-8 flex justify-center">
-                        <button
-                            onClick={() => enrollMutation.mutate()}
-                            disabled={enrollMutation.isPending}
-                            className="px-8 py-3 bg-gradient-to-r from-sky-500 to-sky-600 text-white font-semibold rounded-full shadow-lg hover:shadow-sky-400/50 hover:scale-105 disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none transition-all duration-200"
+                        <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            viewBox="0 0 24 24"
                         >
-                            {enrollMutation.isPending
-                                ? "报名中..."
-                                : "立即报名"}
-                        </button>
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15 19l-7-7 7-7"
+                            />
+                        </svg>
+                        返回列表
+                    </Link>
+
+                    {/* 主要内容卡片 */}
+                    <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                        <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-3">
+                            {activity.title}
+                        </h1>
+                        <p className="text-slate-600 mb-6 leading-relaxed">
+                            {activity.description}
+                        </p>
+
+                        <div className="space-y-4 divide-y divide-slate-100">
+                            <div className="flex items-center gap-3">
+                                <span className="w-24 font-semibold text-slate-700">
+                                    开始时间
+                                </span>
+                                <span className="text-slate-500">
+                                    {new Date(activity.startAt).toLocaleString(
+                                        "zh-CN"
+                                    )}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 pt-4">
+                                <span className="w-24 font-semibold text-slate-700">
+                                    结束时间
+                                </span>
+                                <span className="text-slate-500">
+                                    {activity.endAt
+                                        ? new Date(
+                                              activity.endAt
+                                          ).toLocaleString("zh-CN")
+                                        : "暂无"}
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-3 pt-4">
+                                <span className="w-24 font-semibold text-slate-700">
+                                    名额状态
+                                </span>
+                                <span className="text-slate-500">
+                                    {activity.enrolledCount} /{" "}
+                                    {activity.capacity}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="mt-8 flex justify-center">
+                            <button
+                                onClick={() => enrollMutation.mutate()}
+                                disabled={enrollMutation.isPending}
+                                className="px-8 py-3 bg-gradient-to-r from-sky-500 to-sky-600 text-white font-semibold rounded-full shadow-lg hover:shadow-sky-400/50 hover:scale-105 disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none transition-all duration-200"
+                            >
+                                {enrollMutation.isPending
+                                    ? "报名中..."
+                                    : "立即报名"}
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                {/* 评论区 */}
-                <section className="mt-10">
-                    <h2 className="text-2xl font-bold text-slate-800 mb-6">
-                        评论区
-                    </h2>
+                    {/* 评论区 */}
+                    <section className="mt-10">
+                        <h2 className="text-2xl font-bold text-slate-800 mb-6">
+                            评论区
+                        </h2>
 
-                    {currentUser ? (
-                        <CommentForm
-                            activityId={numericId}
-                            onSubmit={async ({ content, parentId }) => {
-                                await createCommentMutation.mutateAsync({
-                                    activityId: numericId,
-                                    content,
-                                    parentId,
-                                });
-                            }}
-                        />
-                    ) : (
-                        <p className="text-gray-500 mb-4">请登录后评论</p>
-                    )}
-
-                    {commentsLoading ? (
-                        <Spinner />
-                    ) : (
-                        <>
-                            <CommentList
-                                comments={comments}
-                                total={total}
-                                currentUserId={currentUser?.id}
-                                loadingMore={isFetchingNextPage}
-                                onDelete={async (commentId: number) => {
-                                    if (!window.confirm("确认删除该评论？"))
-                                        return;
-                                    await deleteCommentMutation.mutateAsync({
-                                        activityId: numericId,
-                                        commentId,
-                                    });
-                                }}
-                                onReply={async ({ content, parentId }) => {
+                        {currentUser ? (
+                            <CommentForm
+                                activityId={numericId}
+                                onSubmit={async ({ content, parentId }) => {
                                     await createCommentMutation.mutateAsync({
                                         activityId: numericId,
                                         content,
                                         parentId,
                                     });
                                 }}
-                                onLoadMore={
-                                    hasNextPage
-                                        ? () => fetchNextPage()
-                                        : undefined
-                                }
                             />
-                            <div ref={ref} />
-                        </>
-                    )}
-                </section>
+                        ) : (
+                            <p className="text-gray-500 mb-4">请登录后评论</p>
+                        )}
+
+                        {commentsLoading ? (
+                            <Spinner />
+                        ) : (
+                            <>
+                                <CommentList
+                                    comments={comments}
+                                    total={total}
+                                    currentUserId={currentUser?.id}
+                                    loadingMore={isFetchingNextPage}
+                                    onDelete={async (commentId: number) => {
+                                        if (!window.confirm("确认删除该评论？"))
+                                            return;
+                                        await deleteCommentMutation.mutateAsync(
+                                            {
+                                                activityId: numericId,
+                                                commentId,
+                                            }
+                                        );
+                                    }}
+                                    onReply={async ({ content, parentId }) => {
+                                        await createCommentMutation.mutateAsync(
+                                            {
+                                                activityId: numericId,
+                                                content,
+                                                parentId,
+                                            }
+                                        );
+                                    }}
+                                    onLoadMore={
+                                        hasNextPage
+                                            ? () => fetchNextPage()
+                                            : undefined
+                                    }
+                                />
+                                <div ref={ref} />
+                            </>
+                        )}
+                    </section>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

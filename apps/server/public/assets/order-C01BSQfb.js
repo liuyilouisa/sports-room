@@ -1,0 +1,1 @@
+import{c as t}from"./index-BUS16Z0V.js";const s=r=>t.post("/api/orders",{activityId:r}).then(e=>e.data),d=r=>t.post(`/api/orders/${r}/refund`).then(e=>e.data),o=()=>t.get("/api/orders/my").then(r=>r.data);export{s as c,o as g,d as r};

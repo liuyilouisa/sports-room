@@ -123,6 +123,9 @@ importers:
       '@midwayjs/logger':
         specifier: ^3.4.2
         version: 3.4.2
+      '@midwayjs/static-file':
+        specifier: '3'
+        version: 3.20.12
       '@midwayjs/swagger':
         specifier: ^3.17.9
         version: 3.20.6
@@ -154,6 +157,9 @@ importers:
         specifier: ^0.3.25
         version: 0.3.25(reflect-metadata@0.2.2)(sqlite3@5.1.7)
     devDependencies:
+      '@midwayjs/bundle-helper':
+        specifier: ^1.3.0
+        version: 1.3.0
       '@midwayjs/mock':
         specifier: ^3.17.9
         version: 3.20.4
@@ -163,6 +169,9 @@ importers:
       '@types/node':
         specifier: '14'
         version: 14.18.63
+      '@vercel/ncc':
+        specifier: ^0.38.3
+        version: 0.38.3
       cross-env:
         specifier: ^6.0.0
         version: 6.0.3
@@ -731,6 +740,11 @@ packages:
     resolution: {integrity: sha512-3puwSUrIhzBB0Lig5oNcc8rZVSLY+JpoikBHgyv3jpergdLKD1BCU1IREOT6f53mgMQk6Uo9rem9KSNZeb8vVg==}
     engines: {node: '>=12.11.0'}
 
+  '@midwayjs/bundle-helper@1.3.0':
+    resolution: {integrity: sha512-wZHIGeWzK+nTzrp4KFl4arfff9XS4bZkEnSWCHpWl4/PJII2voQ1OCJni02WRydb97Ec3wklM5toN4R8JLkmDQ==}
+    engines: {node: '>=12.0.0'}
+    hasBin: true
+
   '@midwayjs/cookies@1.3.0':
     resolution: {integrity: sha512-jcgGZq2+Ty6qkZ5rQF+ViIn6ntV6n/JuvZ/OmgDsAkS+/SyNc3UuNPlUHzzGrrVWgtJq2w8MzjXbl7a3paIVdw==}
     engines: {node: '>=10'}
@@ -776,6 +790,10 @@ packages:
 
   '@midwayjs/session@3.20.5':
     resolution: {integrity: sha512-Eu3VaerT009wAmNCQTMaR3cdDC4PgHLOxKl5+V3Sml0U6P4X7BKOnwJaEPMoWs1PLbKx0MIhrL33LQX2fVInUQ==}
+    engines: {node: '>=12'}
+
+  '@midwayjs/static-file@3.20.12':
+    resolution: {integrity: sha512-yyIS9vByDxe2v+GwsrcpI7+SadiM9nzcyolvh42MYrR5zsGs1TDeXOI1IhZVpIuS5TgXmJtQUIJCORImUN4wdQ==}
     engines: {node: '>=12'}
 
   '@midwayjs/swagger@3.20.6':
@@ -1181,6 +1199,10 @@ packages:
   '@typescript-eslint/visitor-keys@5.62.0':
     resolution: {integrity: sha512-07ny+LHRzQXepkGg6w0mFY41fVUNBrL2Roj/++7V1txKugfjm/Ci/qSND03r2RhlJhJYMcTn9AhhSSqQp0Ysyw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@vercel/ncc@0.38.3':
+    resolution: {integrity: sha512-rnK6hJBS6mwc+Bkab+PGPs9OiS0i/3kdTO+CkI8V0/VrW3vmz7O2Pxjw/owOlmo6PKEIxRSeZKv/kuL9itnpYA==}
+    hasBin: true
 
   '@vitejs/plugin-react@4.7.0':
     resolution: {integrity: sha512-gUu9hwfWvvEDBBmgtAowQCojwZmJ5mcLn3aufeCsitijs3+f2NsrPtlAWIR6OPiqljl96GVCUbLe0HyqIpVaoA==}
@@ -1590,6 +1612,10 @@ packages:
   component-emitter@1.3.1:
     resolution: {integrity: sha512-T0+barUSQRTUQASh8bx02dl+DhF54GtIDY13Y3m9oWTklKbb3Wv974meRpeZ3lp1JpLVECWWNHC4vaG2XHXouQ==}
 
+  compressible@2.0.18:
+    resolution: {integrity: sha512-AF3r7P5dWxL8MxyITRMlORQNaOA2IkAFaTr4k7BUumjPtRpGDTZpl0Pb1XCO6JeDCBdp126Cgs9sMxqSjgYyRg==}
+    engines: {node: '>= 0.6'}
+
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
@@ -1653,6 +1679,14 @@ packages:
 
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
+
+  debug@3.2.7:
+    resolution: {integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
 
   debug@4.4.1:
     resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
@@ -2126,6 +2160,9 @@ packages:
   fs-minipass@2.1.0:
     resolution: {integrity: sha512-V/JgOLFCS+R6Vcq0slCuaeWEdNC3ouDlJMNIsacH2VtALiu9mV4LPrHc5cDl8k5aw6J8jwgWWpiTo5RYhmIzvg==}
     engines: {node: '>= 8'}
+
+  fs-readdir-recursive@1.1.0:
+    resolution: {integrity: sha512-GNanXlVr2pf02+sPN40XN8HG+ePaNcvM0q5mZBd668Obwb0yD5GiUbZOFgwn8kGMY6I3mdyDJzieUy3PTYyTRA==}
 
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
@@ -2725,6 +2762,14 @@ packages:
   koa-convert@2.0.0:
     resolution: {integrity: sha512-asOvN6bFlSnxewce2e/DK3p4tltyfC4VM7ZwuTuepI7dEQVcvpyFuBcEARu1+Hxg8DIwytce2n7jrZtRlPrARA==}
     engines: {node: '>= 10'}
+
+  koa-range@0.3.0:
+    resolution: {integrity: sha512-Ich3pCz6RhtbajYXRWjIl6O5wtrLs6kE3nkXc9XmaWe+MysJyZO7K4L3oce1Jpg/iMgCbj+5UCiMm/rqVtcDIg==}
+    engines: {node: '>=7'}
+
+  koa-static-cache@5.1.4:
+    resolution: {integrity: sha512-abVWOHY6z6qSTvNtapWMAnvHS9SUiUCaQQQubClSAT9ybQPsZ6ioKcRarnownS4fMD0sXQgQ5ey8CYEuwoa1Yg==}
+    engines: {node: '>= 7.6.0'}
 
   koa@2.16.1:
     resolution: {integrity: sha512-umfX9d3iuSxTQP4pnzLOz0HKnPg0FaUUIKcye2lOiz3KPu1Y3M3xlz76dISdFPQs37P9eJz1wUpcTS6KDPn9fA==}
@@ -3703,6 +3748,9 @@ packages:
 
   stream-combiner@0.0.4:
     resolution: {integrity: sha512-rT00SPnTVyRsaSz5zgSPma/aHSOic5U1prhYdRy5HS2kTZviFpmDgzilbtsJsxiroqACmayynDN/9VzIbX5DOw==}
+
+  stream-slice@0.1.2:
+    resolution: {integrity: sha512-QzQxpoacatkreL6jsxnVb7X5R/pGw9OUv2qWTYWnmLpg4NdN31snPy/f3TdQE1ZUXaThRvj1Zw4/OGg0ZkaLMA==}
 
   string-length@4.0.2:
     resolution: {integrity: sha512-+l6rNN5fYHNhZZy41RXsYptCjA2Igmq4EG7kZAYFQI1E1VTXarr6ZPXBg6eq7Y6eK4FEhY6AJlyuFIb/v/S0VQ==}
@@ -4844,6 +4892,8 @@ snapshots:
       '@midwayjs/async-hooks-context-manager': 3.20.4
       '@midwayjs/event-bus': 1.11.1
 
+  '@midwayjs/bundle-helper@1.3.0': {}
+
   '@midwayjs/cookies@1.3.0':
     dependencies:
       scmp: 2.1.0
@@ -4912,6 +4962,14 @@ snapshots:
   '@midwayjs/session@3.20.5':
     dependencies:
       '@midwayjs/cookies': 1.3.0
+
+  '@midwayjs/static-file@3.20.12':
+    dependencies:
+      koa-range: 0.3.0
+      koa-static-cache: 5.1.4
+      ylru: 1.4.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@midwayjs/swagger@3.20.6': {}
 
@@ -5315,6 +5373,8 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
+
+  '@vercel/ncc@0.38.3': {}
 
   '@vitejs/plugin-react@4.7.0(vite@7.0.6(@types/node@20.19.9)(jiti@1.21.7)(yaml@2.8.0))':
     dependencies:
@@ -5785,6 +5845,10 @@ snapshots:
 
   component-emitter@1.3.1: {}
 
+  compressible@2.0.18:
+    dependencies:
+      mime-db: 1.52.0
+
   concat-map@0.0.1: {}
 
   configstore@5.0.1:
@@ -5850,6 +5914,10 @@ snapshots:
   csstype@3.1.3: {}
 
   dayjs@1.11.13: {}
+
+  debug@3.2.7:
+    dependencies:
+      ms: 2.1.3
 
   debug@4.4.1:
     dependencies:
@@ -6368,6 +6436,8 @@ snapshots:
   fs-minipass@2.1.0:
     dependencies:
       minipass: 3.3.6
+
+  fs-readdir-recursive@1.1.0: {}
 
   fs.realpath@1.0.0: {}
 
@@ -7181,6 +7251,20 @@ snapshots:
     dependencies:
       co: 4.6.0
       koa-compose: 4.1.0
+
+  koa-range@0.3.0:
+    dependencies:
+      stream-slice: 0.1.2
+
+  koa-static-cache@5.1.4:
+    dependencies:
+      compressible: 2.0.18
+      debug: 3.2.7
+      fs-readdir-recursive: 1.1.0
+      mime-types: 2.1.35
+      mz: 2.7.0
+    transitivePeerDependencies:
+      - supports-color
 
   koa@2.16.1:
     dependencies:
@@ -8181,6 +8265,8 @@ snapshots:
   stream-combiner@0.0.4:
     dependencies:
       duplexer: 0.1.2
+
+  stream-slice@0.1.2: {}
 
   string-length@4.0.2:
     dependencies:

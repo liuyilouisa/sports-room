@@ -1,0 +1,1 @@
+import{o,s,e as r}from"./schemas-BYk0niwe.js";const a=o({email:r("邮箱格式不正确"),password:s().min(6,"至少 6 位")}),i=a.extend({name:s().min(1,"昵称不能为空"),confirmPassword:s()}).refine(e=>e.password===e.confirmPassword,{message:"两次密码不一致",path:["confirmPassword"]});export{a as l,i as r};

@@ -32,4 +32,15 @@ export default {
       allowHeaders: ['Content-Type', 'Authorization'],
     },
   },
+  staticFile: {
+    dirs: {
+      default: {
+        prefix: '/',
+        alias: {
+          '/': '/index.html',
+        },
+      },
+    },
+    // ...
+  },
 } as MidwayConfig;
