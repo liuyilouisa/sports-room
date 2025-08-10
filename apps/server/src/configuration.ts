@@ -2,7 +2,6 @@ import { Configuration, App } from '@midwayjs/core';
 import * as koa from '@midwayjs/koa';
 import * as validate from '@midwayjs/validate';
 import * as info from '@midwayjs/info';
-import { join } from 'path';
 import * as typeorm from '@midwayjs/typeorm';
 import * as swagger from '@midwayjs/swagger';
 import * as jwt from '@midwayjs/jwt';
@@ -12,6 +11,10 @@ import 'reflect-metadata';
 import { TypeORMDataSourceManager } from '@midwayjs/typeorm';
 import { User } from './entity';
 import * as bcrypt from 'bcryptjs';
+import * as UniTestConfig from './config/config.unittest';
+import * as DefaultConfig from './config/config.default';
+import * as E2EConfig from './config/config.e2e';
+
 @Configuration({
   imports: [
     koa,
@@ -25,7 +28,9 @@ import * as bcrypt from 'bcryptjs';
     jwt,
     crossDomain,
   ],
-  importConfigs: [join(__dirname, './config')],
+  importConfigs: [
+    { default: DefaultConfig, unittest: UniTestConfig, e2e: E2EConfig },
+  ],
 })
 export class MainConfiguration {
   @App('koa')
